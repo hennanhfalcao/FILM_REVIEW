@@ -1,0 +1,59 @@
+{% extends 'review/base.html' %}
+
+{% block title %}{{ review.title }}{% endblock %}
+
+{% block content %}
+
+  <div class="col-md-12 mx-auto">
+    <div class="card flex-md-row mb-4 h-md-250 border-0">
+      <div class="card-body d-flex flex-column align-items-start">
+        <h3 class="mb-1">{{ review.title }}</h3>
+        <div class="mb-4">
+          {{ review.published_at }}, by <strong>{{ review.author.username }}</strong>
+        </div>
+        <p class="card-text mb-auto">{{ review.body | linebreaks }}</p>
+
+        <div class="bd-example m-0 border-0 mt-2">
+          <h5>
+            <span class="badge rounded-pill text-bg-primary">
+              {{ review.rating }}
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 21 21">
+                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+              </svg>
+            </span>
+          </h5>
+
+          <a href=""><span class="badge text-bg-secondary">Tag 1</span></a>
+          <a href=""><span class="badge text-bg-secondary">Tag 2</span></a>
+          <a href=""><span class="badge text-bg-secondary">Tag 3</span></a>
+        </div>
+
+        <hr />
+
+        <a href="{% url "review:review_list" %}" class="btn btn-light">Voltar</a>
+
+        <hr />
+
+        {% with comments_total=comments.count %}
+          <h4 class="mb-3">{{ comments_total }} Comment{{ comments_total|pluralize }}: </h4>
+        {% endwith %}
+
+        {% for comment in comments %}
+          <div class="card mb-4 col-md-6">
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <p>Comment #{{ forloop.counter }}</p>
+                <p>{{ comment.message }}</p>
+                <footer class="blockquote-footer">{{ comment.user_name }} <cite title="Source Title"> - {{ comment.created_at }}</cite></footer>
+              </blockquote>
+            </div>
+          </div>
+        {% empty %}
+          <h4>There is no comment</h4>
+        {% endfor %}
+
+        {% include 'review/includes/comment_form.html' %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Post your comment</h5>
+      <form action="{% url 'review:add_comment' review.id %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send</button>
+      </form>
+    </div>
+</div>
